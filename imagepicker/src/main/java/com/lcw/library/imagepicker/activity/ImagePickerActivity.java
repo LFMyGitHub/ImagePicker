@@ -63,6 +63,8 @@ public class ImagePickerActivity extends BaseActivity implements ImagePickerAdap
     private boolean isShowCamera;
     private boolean isShowImage;
     private boolean isShowVideo;
+    private long maxDuration;//视频过滤时长
+    private long minDuration;//视频过滤时长
     private boolean isSingleType;
     private int mMaxCount;
     private List<String> mImagePaths;
@@ -136,6 +138,8 @@ public class ImagePickerActivity extends BaseActivity implements ImagePickerAdap
         isShowCamera = ConfigManager.getInstance().isShowCamera();
         isShowImage = ConfigManager.getInstance().isShowImage();
         isShowVideo = ConfigManager.getInstance().isShowVideo();
+        maxDuration = ConfigManager.getInstance().getMaxDuration();
+        minDuration = ConfigManager.getInstance().getMinDuration();
         isSingleType = ConfigManager.getInstance().isSingleType();
         mMaxCount = ConfigManager.getInstance().getMaxCount();
         SelectionManager.getInstance().setMaxCount(mMaxCount);
@@ -287,11 +291,19 @@ public class ImagePickerActivity extends BaseActivity implements ImagePickerAdap
         //照片、视频全部加载
         if (isShowImage && isShowVideo) {
             mediaLoadTask = new MediaLoadTask(this, new MediaLoader());
+            if(maxDuration > 0 || minDuration > 0){
+                ((MediaLoadTask) mediaLoadTask).setMaxDuration(maxDuration);
+                ((MediaLoadTask) mediaLoadTask).setMinDuration(minDuration);
+            }
         }
 
         //只加载视频
         if (!isShowImage && isShowVideo) {
             mediaLoadTask = new VideoLoadTask(this, new MediaLoader());
+            if(maxDuration > 0 || minDuration > 0){
+                ((VideoLoadTask) mediaLoadTask).setMaxDuration(maxDuration);
+                ((VideoLoadTask) mediaLoadTask).setMinDuration(minDuration);
+            }
         }
 
         //只加载图片
@@ -302,6 +314,10 @@ public class ImagePickerActivity extends BaseActivity implements ImagePickerAdap
         //不符合以上场景，采用照片、视频全部加载
         if (mediaLoadTask == null) {
             mediaLoadTask = new MediaLoadTask(this, new MediaLoader());
+            if(maxDuration > 0 || minDuration > 0){
+                ((MediaLoadTask) mediaLoadTask).setMaxDuration(maxDuration);
+                ((MediaLoadTask) mediaLoadTask).setMinDuration(minDuration);
+            }
         }
 
         CommonExecutor.getInstance().execute(mediaLoadTask);

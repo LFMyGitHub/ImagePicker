@@ -8,6 +8,7 @@ import com.lcw.library.imagepicker.loader.MediaHandler;
 import com.lcw.library.imagepicker.loader.VideoScanner;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * 媒体库扫描任务（视频）
@@ -19,6 +20,8 @@ import java.util.ArrayList;
 public class VideoLoadTask implements Runnable {
 
     private Context mContext;
+    private long maxDuration = 0;
+    private long minDuration = 0;
     private VideoScanner mVideoScanner;
     private MediaLoadCallback mMediaLoadCallback;
 
@@ -36,6 +39,16 @@ public class VideoLoadTask implements Runnable {
 
         if (mVideoScanner != null) {
             videoFileList = mVideoScanner.queryMedia();
+            Iterator it = videoFileList.iterator();
+            while (it.hasNext()) {
+                MediaFile mediaFile = (MediaFile) it.next();
+                if (maxDuration > 0 && mediaFile.getDuration() > maxDuration) {
+                    it.remove();
+                }
+                if (minDuration > 0 && mediaFile.getDuration() < minDuration) {
+                    it.remove();
+                }
+            }
         }
 
         if (mMediaLoadCallback != null) {
@@ -43,6 +56,14 @@ public class VideoLoadTask implements Runnable {
         }
 
 
+    }
+
+    public void setMaxDuration(long duration){
+        this.maxDuration = duration;
+    }
+
+    public void setMinDuration(long duration){
+        this.minDuration = duration;
     }
 
 }

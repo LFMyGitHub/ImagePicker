@@ -86,6 +86,26 @@ public class ImagePicker {
         return mImagePicker;
     }
 
+    /**
+     * 最大视频时长
+     * @param duration
+     * @return
+     */
+    public ImagePicker setMaxDuration(long duration) {
+        ConfigManager.getInstance().setMaxDuration(duration * 1000);
+        return mImagePicker;
+    }
+
+    /**
+     * 最小视频时长
+     * @param duration
+     * @return
+     */
+    public ImagePicker setMinxDuration(long duration) {
+        ConfigManager.getInstance().setMinDuration(duration * 1000);
+        return mImagePicker;
+    }
+
 
     /**
      * 图片最大选择数

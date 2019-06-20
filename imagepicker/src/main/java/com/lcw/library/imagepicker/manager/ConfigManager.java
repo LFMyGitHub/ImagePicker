@@ -20,6 +20,8 @@ public class ConfigManager {
     private boolean showCamera;//是否显示拍照Item，默认不显示
     private boolean showImage = true;//是否显示图片，默认显示
     private boolean showVideo = true;//是否显示视频，默认显示
+    private long maxDuration = 0;//视频过滤时长，默认为0不过滤
+    private long minDuration = 0;
     private int selectionMode = SELECT_MODE_SINGLE;//选择模式，默认单选
     private int maxCount = 1;//最大选择数量，默认为1
     private boolean singleType;//是否只支持选单类型（图片或者视频）
@@ -119,5 +121,21 @@ public class ConfigManager {
 
     public void setImageLoader(ImageLoader imageLoader) {
         this.imageLoader = imageLoader;
+    }
+
+    public void setMaxDuration(long duration) {
+        this.maxDuration = duration;
+    }
+
+    public long getMaxDuration() {
+        return maxDuration;
+    }
+
+    public void setMinDuration(long duration) {
+        this.minDuration = duration;
+    }
+
+    public long getMinDuration() {
+        return minDuration;
     }
 }
