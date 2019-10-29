@@ -690,6 +690,7 @@ public class ImagePickerActivity extends BaseActivity implements ImagePickerAdap
         super.onDestroy();
         try {
             ConfigManager.getInstance().getImageLoader().clearMemoryCache();
+            SelectionManager.getInstance().removeAll();//清空选中记录
         } catch (Exception e) {
             e.printStackTrace();
         }
