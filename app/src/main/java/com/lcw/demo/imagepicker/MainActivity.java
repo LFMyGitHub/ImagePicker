@@ -27,10 +27,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ImagePicker.getInstance()
                         .setTitle("标题")//设置标题
-                        .showCamera(true)//设置是否显示拍照按钮
+                        .showCamera(true)//设置是否显示按钮
+                        .showVideoOrImage(2)//设置拍照按钮还是录制按钮
                         .showImage(true)//设置是否展示图片
                         .showVideo(true)//设置是否展示视频
-                        .setMaxCount(9)//设置最大选择图片数目(默认为1，单选)
+                        .setMaxCount(1)//设置最大选择图片数目(默认为1，单选)
                         .setMinxDuration(3)
                         .setMaxDuration(15)//过滤视频3-15s间才显示
                         .setSingleType(true)//设置图片视频不能同时选择

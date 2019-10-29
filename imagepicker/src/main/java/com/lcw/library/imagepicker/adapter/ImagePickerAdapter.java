@@ -33,11 +33,13 @@ public class ImagePickerAdapter extends RecyclerView.Adapter<ImagePickerAdapter.
     private Context mContext;
     private List<MediaFile> mMediaFileList;
     private boolean isShowCamera;
+    private int type;
 
 
-    public ImagePickerAdapter(Context context, List<MediaFile> mediaFiles) {
+    public ImagePickerAdapter(Context context, List<MediaFile> mediaFiles, int type) {
         this.mContext = context;
         this.mMediaFileList = mediaFiles;
+        this.type = type;
         this.isShowCamera = ConfigManager.getInstance().isShowCamera();
     }
 
@@ -108,6 +110,14 @@ public class ImagePickerAdapter extends RecyclerView.Adapter<ImagePickerAdapter.
         int itemType = getItemViewType(position);
         MediaFile mediaFile = getMediaFile(position);
         switch (itemType) {
+            case ItemType.ITEM_TYPE_CAMERA:
+                BaseHolder baseHolder = (BaseHolder) holder;
+                if (type == 2) {
+                    baseHolder.mTvCamera.setText("录制视频");
+                } else {
+                    baseHolder.mTvCamera.setText("拍摄图片");
+                }
+                break;
             //图片、视频Item
             case ItemType.ITEM_TYPE_IMAGE:
             case ItemType.ITEM_TYPE_VIDEO:
@@ -228,10 +238,12 @@ public class ImagePickerAdapter extends RecyclerView.Adapter<ImagePickerAdapter.
     class BaseHolder extends RecyclerView.ViewHolder {
 
         public SquareRelativeLayout mSquareRelativeLayout;
+        public TextView mTvCamera;
 
         public BaseHolder(View itemView) {
             super(itemView);
             mSquareRelativeLayout = itemView.findViewById(R.id.srl_item);
+            mTvCamera = itemView.findViewById(R.id.tv_camera);
         }
     }
 

@@ -19,6 +19,7 @@ public class SelectionManager {
     private ArrayList<String> mSelectImagePaths = new ArrayList<>();
 
     private int mMaxCount = 1;
+    private int mShowImageOrCareamType = 1;
 
     private SelectionManager() {
     }
@@ -50,6 +51,24 @@ public class SelectionManager {
      */
     public int getMaxCount() {
         return this.mMaxCount;
+    }
+
+    /**
+     * 设置显示拍照还是录屏按钮
+     *
+     * @param showImageOrCareamType 1：拍照2：录屏
+     */
+    public void setShowImageOrCareamType(int showImageOrCareamType) {
+        this.mShowImageOrCareamType = showImageOrCareamType;
+    }
+
+    /**
+     * 设置显示拍照还是录屏按钮
+     *
+     * @return
+     */
+    public int getShowImageOrCareamType() {
+        return this.mShowImageOrCareamType;
     }
 
     /**

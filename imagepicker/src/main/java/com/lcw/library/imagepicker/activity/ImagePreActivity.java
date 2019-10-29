@@ -113,7 +113,11 @@ public class ImagePreActivity extends BaseActivity {
                     updateSelectButton(mMediaFileList.get(mViewPager.getCurrentItem()).getPath());
                     updateCommitButton();
                 } else {
-                    Toast.makeText(ImagePreActivity.this, String.format(getString(R.string.select_image_max), SelectionManager.getInstance().getMaxCount()), Toast.LENGTH_SHORT).show();
+                    if(SelectionManager.getInstance().getShowImageOrCareamType() == 2){
+                        Toast.makeText(ImagePreActivity.this, String.format(getString(R.string.select_video_max), SelectionManager.getInstance().getMaxCount()), Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(ImagePreActivity.this, String.format(getString(R.string.select_image_max), SelectionManager.getInstance().getMaxCount()), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });

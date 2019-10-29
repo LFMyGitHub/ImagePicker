@@ -65,6 +65,17 @@ public class ImagePicker {
     }
 
     /**
+     * 相机是拍照还是录像
+     *
+     * @param type 1:拍照2：录像
+     * @return
+     */
+    public ImagePicker showVideoOrImage(int type) {
+        ConfigManager.getInstance().setShowVideoOrImage(type);
+        return mImagePicker;
+    }
+
+    /**
      * 是否展示图片
      *
      * @param showImage

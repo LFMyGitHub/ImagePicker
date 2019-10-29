@@ -18,6 +18,7 @@ public class ConfigManager {
 
     private String title;//标题
     private boolean showCamera;//是否显示拍照Item，默认不显示
+    private int showVideoOrImage;//是录像还是拍照，默认不显示
     private boolean showImage = true;//是否显示图片，默认显示
     private boolean showVideo = true;//是否显示视频，默认显示
     private long maxDuration = 0;//视频过滤时长，默认为0不过滤
@@ -59,6 +60,14 @@ public class ConfigManager {
 
     public void setShowCamera(boolean showCamera) {
         this.showCamera = showCamera;
+    }
+
+    public int isShowVideoOrImage() {
+        return showVideoOrImage;
+    }
+
+    public void setShowVideoOrImage(int showCamera) {
+        this.showVideoOrImage = showCamera;
     }
 
     public boolean isShowImage() {
