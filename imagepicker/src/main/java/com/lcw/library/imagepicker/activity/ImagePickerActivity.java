@@ -188,7 +188,7 @@ public class ImagePickerActivity extends BaseActivity implements ImagePickerAdap
         mRecyclerView.setItemViewCacheSize(60);
 
         mMediaFileList = new ArrayList<>();
-        mImagePickerAdapter = new ImagePickerAdapter(this, mMediaFileList,isShowVideoCamera);
+        mImagePickerAdapter = new ImagePickerAdapter(this, mMediaFileList, isShowVideoCamera);
         mImagePickerAdapter.setOnItemClickListener(this);
         mRecyclerView.setAdapter(mImagePickerAdapter);
 
@@ -250,7 +250,7 @@ public class ImagePickerActivity extends BaseActivity implements ImagePickerAdap
         //进行权限的判断
         boolean hasPermission = PermissionUtil.checkPermission(this);
         if (!hasPermission) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSION_CAMERA_CODE);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION_CAMERA_CODE);
         } else {
             startScannerTask();
         }
@@ -429,14 +429,14 @@ public class ImagePickerActivity extends BaseActivity implements ImagePickerAdap
         if (isShowCamera) {
             if (position == 0) {
                 if (!SelectionManager.getInstance().isCanChoose()) {
-                    if(isShowVideoCamera == 2){
+                    if (isShowVideoCamera == 2) {
                         Toast.makeText(this, String.format(getString(R.string.select_video_max), mMaxCount), Toast.LENGTH_SHORT).show();
-                    }else {
+                    } else {
                         Toast.makeText(this, String.format(getString(R.string.select_image_max), mMaxCount), Toast.LENGTH_SHORT).show();
                     }
                     return;
                 }
-                if(isShowVideoCamera != 0){
+                if (isShowVideoCamera != 0) {
                     setVideoOrImage(isShowVideoCamera);
                 }
                 return;
@@ -466,14 +466,14 @@ public class ImagePickerActivity extends BaseActivity implements ImagePickerAdap
         if (isShowCamera) {
             if (position == 0) {
                 if (!SelectionManager.getInstance().isCanChoose()) {
-                    if(isShowVideoCamera == 2){
+                    if (isShowVideoCamera == 2) {
                         Toast.makeText(this, String.format(getString(R.string.select_video_max), mMaxCount), Toast.LENGTH_SHORT).show();
-                    }else {
+                    } else {
                         Toast.makeText(this, String.format(getString(R.string.select_image_max), mMaxCount), Toast.LENGTH_SHORT).show();
                     }
                     return;
                 }
-                if(isShowVideoCamera != 0){
+                if (isShowVideoCamera != 0) {
                     setVideoOrImage(isShowVideoCamera);
                 }
                 return;
@@ -500,9 +500,9 @@ public class ImagePickerActivity extends BaseActivity implements ImagePickerAdap
             if (addSuccess) {
                 mImagePickerAdapter.notifyItemChanged(position);
             } else {
-                if(isShowVideoCamera == 2){
+                if (isShowVideoCamera == 2) {
                     Toast.makeText(this, String.format(getString(R.string.select_video_max), mMaxCount), Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     Toast.makeText(this, String.format(getString(R.string.select_image_max), mMaxCount), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -548,7 +548,6 @@ public class ImagePickerActivity extends BaseActivity implements ImagePickerAdap
                 }
             }
         }
-
         //拍照存放路径
         File fileDir = new File(Environment.getExternalStorageDirectory(), "Pictures");
         if (!fileDir.exists()) {
@@ -569,14 +568,18 @@ public class ImagePickerActivity extends BaseActivity implements ImagePickerAdap
 
     /**
      * 设置跳转拍照还是录像
+     *
      * @param type
      */
     public void setVideoOrImage(int type) {
         if (type == 1) {//拍照
             //拍照存放路径
-            File fileDir = new File(Environment.getExternalStorageDirectory(), "Pictures");
+            File fileDir = new File(getExternalCacheDir().toString(), "Pictures");
             if (!fileDir.exists()) {
-                fileDir.mkdir();
+                boolean mkdirs = fileDir.mkdirs();
+                if (!mkdirs) {
+                    Toast.makeText(this, "文件夹创建失败", Toast.LENGTH_SHORT).show();
+                }
             }
             mFilePath = fileDir.getAbsolutePath() + "/IMG_" + System.currentTimeMillis() + ".jpg";
 
@@ -590,9 +593,9 @@ public class ImagePickerActivity extends BaseActivity implements ImagePickerAdap
             intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
             startActivityForResult(intent, REQUEST_CODE_CAPTURE);
         } else {//录像
-            File fileDir = new File(Environment.getExternalStorageDirectory(), "Video");
+            File fileDir = new File(getExternalFilesDir(null).toString(), "Video");
             if (!fileDir.exists()) {
-                fileDir.mkdir();
+                fileDir.mkdirs();
             }
             mFilePath = fileDir.getAbsolutePath() + "/VIDEO_" + System.currentTimeMillis() + ".mp4";
 
@@ -695,5 +698,4 @@ public class ImagePickerActivity extends BaseActivity implements ImagePickerAdap
             e.printStackTrace();
         }
     }
-
 }
